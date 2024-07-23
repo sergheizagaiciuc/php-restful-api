@@ -1,4 +1,11 @@
 <?php
+/**
+ * @author     Pierre-Henry Soria <hi@ph7.me>
+ * @website    https://ph7.me
+ * @license    MIT License
+ */
+
+declare(strict_types=1);
 
 namespace PH7\ApiSimpleMenu\Dal;
 
@@ -42,7 +49,7 @@ final class FoodItemDal
             }, $itemsBean);
     }
 
-    public static function createDefaultItem(ItemEntity $itemEntity): int|string
+    public static function insertDefaultItem(ItemEntity $itemEntity): int|string
     {
         $itemBan = R::dispense(self::TABLE_NAME);
 

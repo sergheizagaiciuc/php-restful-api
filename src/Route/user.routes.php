@@ -1,11 +1,17 @@
 <?php
+/**
+ * @author     Pierre-Henry Soria <hi@ph7.me>
+ * @website    https://ph7.me
+ * @license    MIT License
+ */
+
 namespace PH7\ApiSimpleMenu\Route;
 
 use PH7\ApiSimpleMenu\Route\Exception\NotFoundException;
+use PH7\ApiSimpleMenu\Service\Exception\CannotLoginUserException;
 use PH7\ApiSimpleMenu\Service\Exception\EmailExistsException;
 use PH7\ApiSimpleMenu\Service\SecretKey;
 use PH7\ApiSimpleMenu\Service\User;
-use PH7\ApiSimpleMenu\Validation\Exception\InvalidValidationException;
 
 use PH7\JustHttp\StatusCode;
 use PH7\PhpHttpResponseHeader\Http as HttpResponse;
@@ -57,14 +63,13 @@ enum UserAction: string
                 self::RETRIEVE => $user->retrieve($userId),
                 self::REMOVE => $user->remove($postBody),
             };
-        } catch (InvalidValidationException $e) {
+        } catch (CannotLoginUserException $e) {
             // Send 400 http status code
             HttpResponse::setHeadersByCode(StatusCode::BAD_REQUEST);
 
             $response = [
                 'errors' => [
                     'message' => $e->getMessage(),
-                    'code' => $e->getCode()
                 ]
             ];
         } catch (EmailExistsException $e) {

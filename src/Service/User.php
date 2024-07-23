@@ -1,8 +1,18 @@
 <?php
+/**
+ * @author     Pierre-Henry Soria <hi@ph7.me>
+ * @website    https://ph7.me
+ * @license    MIT License
+ */
+
+declare(strict_types=1);
+
 namespace PH7\ApiSimpleMenu\Service;
 
+use Exception;
 use Firebase\JWT\JWT;
 use PH7\ApiSimpleMenu\Dal\UserDal;
+use PH7\ApiSimpleMenu\Service\Exception\CannotLoginUserException;
 use PH7\ApiSimpleMenu\Service\Exception\EmailExistsException;
 use PH7\ApiSimpleMenu\Service\Exception\CredentialsInvalidException;
 use PH7\ApiSimpleMenu\Validation\Exception\InvalidValidationException;
@@ -47,7 +57,11 @@ class User
                         $_ENV['JWT_ALGO_ENCRYPTION']
                     );
 
-                    UserDal::setToken($jwtToken, $user->getUserUuid());
+                    try {
+                        UserDal::setToken($jwtToken, $user->getUserUuid());
+                    } catch (Exception) { // since PHP 8.0, we can omit the caught variable name (e.g. Exception $e)
+                        throw new CannotLoginUserException('Cannot set token to user');
+                    }
 
                     return [
                         'message' => sprintf('%s successfully logged in', $userName),

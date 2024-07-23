@@ -1,4 +1,11 @@
 <?php
+/**
+ * @author     Pierre-Henry Soria <hi@ph7.me>
+ * @website    https://ph7.me
+ * @license    MIT License
+ */
+
+declare(strict_types=1);
 
 namespace PH7\ApiSimpleMenu\Dal;
 
@@ -8,7 +15,7 @@ final class TokenKeyDal
 {
     public const TABLE_NAME = 'secretkeys';
 
-    public static function saveSecretKey(string $jwtKey)
+    public static function saveSecretKey(string $jwtKey): void
     {
         $tokenBean = R::dispense(self::TABLE_NAME);
         $tokenBean->secretKey = $jwtKey;

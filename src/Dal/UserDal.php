@@ -1,4 +1,11 @@
 <?php
+/**
+ * @author     Pierre-Henry Soria <hi@ph7.me>
+ * @website    https://ph7.me
+ * @license    MIT License
+ */
+
+declare(strict_types=1);
 
 namespace PH7\ApiSimpleMenu\Dal;
 
@@ -23,7 +30,7 @@ final class UserDal
 
         try {
             $redBeanIncrementId = R::store($userBean);
-        } catch (SQL $e) {
+        } catch (SQL) { // since PHP 8, we can omit the caught variable (e.g. SQL $e)
             return false;
         } finally {
             R::close();
@@ -58,10 +65,10 @@ final class UserDal
                 $userBean->phone = $phone;
             }
 
-            // save the user
+            // attempt to save the user
             try {
-                return R::store($userBean);
-            } catch (SQL $e) {
+                return R::store($userBean); // returns the user ID
+            } catch (SQL) { // PHP >=8.0 allows to omit the caught variable (e.g. SQL $e)
                 return false;
             } finally {
                 R::close();
@@ -89,6 +96,9 @@ final class UserDal
         return (new UserEntity())->unserialize($userBean?->export());
     }
 
+    /**
+     * @throws \RedBeanPHP\RedException\SQL
+     */
     public static function setToken(string $jwtToken, string $userUuid): void
     {
         $bindings = ['userUuid' => $userUuid];
