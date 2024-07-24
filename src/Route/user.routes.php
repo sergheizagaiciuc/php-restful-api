@@ -23,6 +23,7 @@ enum UserAction: string
     case RETRIEVE_ALL = 'retrieveall';
     case RETRIEVE = 'retrieve';
     case REMOVE = 'remove';
+    case REMOVE_ALL = 'removeall';
     case UPDATE = 'update';
 
     /**
@@ -48,7 +49,8 @@ enum UserAction: string
                 self::UPDATE => Http::PUT_METHOD,
                 self::RETRIEVE_ALL => Http::GET_METHOD,
                 self::RETRIEVE => Http::GET_METHOD,
-                self::REMOVE => Http::DELETE_METHOD
+                self::REMOVE => Http::DELETE_METHOD,
+                self::REMOVE_ALL => Http::DELETE_METHOD
             };
 
             if (Http::doesHttpMethodMatch($expectHttpMethod) === false) {
@@ -62,6 +64,7 @@ enum UserAction: string
                 self::RETRIEVE_ALL => $user->retrieveAll(),
                 self::RETRIEVE => $user->retrieve($userId),
                 self::REMOVE => $user->remove($postBody),
+                self::REMOVE_ALL => $user->removeAll(),
             };
         } catch (CannotLoginUserException $e) {
             // Send 400 http status code

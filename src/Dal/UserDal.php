@@ -147,6 +147,11 @@ final class UserDal
         return false;
     }
 
+    public static function removeAll(): bool
+    {
+        return (bool)R::wipe(self::TABLE_NAME);
+    }
+
     public static function doesEmailExist(string $email): bool
     {
         // If R::findOne doesn't find any rows, it returns NULL (meaning, the email address doesn't exist)

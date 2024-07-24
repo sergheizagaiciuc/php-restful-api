@@ -193,4 +193,10 @@ class User
 
         throw new InvalidValidationException("Invalid user UUID");
     }
+
+    public function removeAll(): bool
+    {           
+        return UserDal::removeAll();
+    }
+
 }
